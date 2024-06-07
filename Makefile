@@ -5,6 +5,6 @@ lint:
 	poetry run flake8 app
 
 test:
-	curl -X POST http://localhost:8000/v1/embeddings \
+	curl -X POST http://localhost:8000/embed \
     -H 'Content-Type: application/json' \
     -d '{"text":"This is a test string."}' | jq
