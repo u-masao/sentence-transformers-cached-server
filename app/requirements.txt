@@ -1,4 +1,4 @@
 fastapi==0.111.0
 sentence-transformers==3.0.1
 redis==5.0.5
-
+pydantic-settings==2.3.1
