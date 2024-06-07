@@ -10,9 +10,9 @@ services:
     ports:
       - 8000:8000
     environment:
-      API_MODEL_NAME: intfloat/multilingual-e5-large
-      # API_MODEL_NAME: intfloat/multilingual-e5-base
-      # API_MODEL_NAME: intfloat/multilingual-e5-small
+      API_HF_MODEL_NAME: intfloat/multilingual-e5-large
+      # API_HF_MODEL_NAME: intfloat/multilingual-e5-base
+      # API_HF_MODEL_NAME: intfloat/multilingual-e5-small
       API_REDIS_HOST: redis
       API_REDIS_PORT: 6379
     depends_on:
