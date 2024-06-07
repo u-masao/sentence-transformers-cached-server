@@ -17,36 +17,56 @@
 テキスト入力を受け取り、SentenceTransformers の encode() メソッドで埋め込みを計算します。
 計算された埋め込みは Redis にキャッシュされ、次回同じテキストが入力された場合はキャッシュから高速に返されます。
 Docker コンテナとして実行できるため、環境構築が容易です。
-/v1/embeddings エンドポイントで埋め込みを取得できます。
+/embed エンドポイントで埋め込みを取得できます。
 
 ## 使用方法
 
 ### 環境構築
 
 ```bash
-    docker-compose up -d --build
+docker-compose up -d --build
 ```
 
 
 ### 埋め込み取得
 
 ```
-    http://localhost:8000/embeddings?input=あなたのテキスト
+curl -X POST http://localhost:8000/embed \
+    -H 'Content-Type: application/json' \
+    -d '{"text":"This is a test string."}'
 ```
 
-input パラメータに埋め込みを取得したいテキストを指定します。
-レスポンスはJSON形式で、embedding フィールドに埋め込みベクトルが含まれます。
+text パラメータに埋め込みを取得したいテキストを指定します。
+
+レスポンスは JSON 形式で、embedding フィールドに埋め込みベクトルが含まれます。
+
+```
+{
+  "embedding": [
+    0.0025373732205480337,
+    -0.008475706912577152,
+    -0.005010251421481371,
+    -0.0677233338356018,
+    0.04533613100647926,
+    -0.046973951160907745,
+    0.026564622297883034,
+    0.10488858073949814,
+       ....
+    0.0399100000000332
+  ]
+}
+```
 
 ### カスタマイズ
 
 SentenceTransformersモデル:
-app/main.py 内の model = SentenceTransformer('all-mpnet-base-v2') を変更することで、使用するモデルを変更できます。
+docker-compose.yaml 内の API_HF_MODEL_NAME を変更することで、使用するモデルを変更できます。
 
 Redis設定:
-docker-compose.yml 内の REDIS_HOST 環境変数でRedisのホスト名を指定できます。
+docker-compose.yml 内の API_REDIS_HOST 環境変数でRedisのホスト名を指定できます。
 
 エンドポイントURL:
-app/main.py 内の @app.get("/v1/embeddings") デコレータを変更することで、エンドポイントのURLを変更できます。
+app/main.py 内の @app.post("/embed") デコレータを変更することで、エンドポイントの URL を変更できます。
 
 ## ライセンス
 
