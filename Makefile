@@ -7,4 +7,4 @@ lint:
 test:
 	curl -X POST http://localhost:8000/v1/embeddings \
     -H 'Content-Type: application/json' \
-    -d '{"text":"This is a test string."}'
+    -d '{"text":"This is a test string."}' | jq
