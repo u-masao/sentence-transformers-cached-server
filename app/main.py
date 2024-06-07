@@ -17,7 +17,7 @@ class InputText(BaseModel):
 
 
 @app.post("/v1/embeddings")
-async def get_embeddings(input_text: InputText = Body(...)):
+async def embeddings(input_text: InputText = Body(...)):
     cache_key = f"embeddings:{settings.hf_model_name}:{input_text.text}"
     cached_result = redis.get(cache_key)
 
