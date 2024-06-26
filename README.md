@@ -31,9 +31,9 @@ docker-compose up -d --build
 ### 埋め込み取得
 
 ```
-curl -X POST http://localhost:8000/embed \
+curl -X POST http://localhost:8000/embeddings \
     -H 'Content-Type: application/json' \
-    -d '{"text":"This is a test string."}'
+    -d '{"input":"この文字列は日本語で書かれたテスト文字列です","model":"awesome_embedding_model"}'
 ```
 
 text パラメータに埋め込みを取得したいテキストを指定します。
@@ -57,16 +57,28 @@ text パラメータに埋め込みを取得したいテキストを指定しま
 }
 ```
 
+### Redis キャッシュの削除
+
+API 起動時にキャッシュをクリアします。キャッシュをクリアする場合は以下のコマンドなどで、API を再起動してください。
+
+```
+docker compose restart
+```
+
 ### カスタマイズ
 
-SentenceTransformersモデル:
-docker-compose.yaml 内の API_HF_MODEL_NAME を変更することで、使用するモデルを変更できます。
+- SentenceTransformersモデル
+  - docker-compose.yaml 内の API_HF_MODEL_NAME を変更することで、使用するモデルを変更できます。
 
-Redis設定:
-docker-compose.yml 内の API_REDIS_HOST 環境変数でRedisのホスト名を指定できます。
+- Redis設定
+  - docker-compose.yml 内の API_REDIS_HOST 環境変数でRedisのホスト名を指定できます。
 
-エンドポイントURL:
-app/main.py 内の @app.post("/embed") デコレータを変更することで、エンドポイントの URL を変更できます。
+- エンドポイントURL
+  - app/main.py 内の @app.post("/embeddings") デコレータを変更することで、エンドポイントの URL を変更できます。
+
+- Listen port
+  - docker-compose.yaml 内のポート番号 8000 を変更すると、リッスンするポートを変更できます。
+
 
 ## ライセンス
 
