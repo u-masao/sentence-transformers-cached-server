@@ -18,7 +18,6 @@ tokenizer = AutoTokenizer.from_pretrained(settings.hf_model_name)
 embedding_model = AutoModel.from_pretrained(settings.hf_model_name)
 
 
-
 class InputData(BaseModel):
     input: str
     model: str
@@ -66,7 +65,7 @@ def embed(text: str) -> Tuple[List[float], int]:
     global tokenizer, embedding_model, settings
 
     batch_dict = tokenizer(
-        [text],
+        [str(text)],
         max_length=settings.hf_max_length,
         padding=True,
         truncation=True,
@@ -80,6 +79,7 @@ def embed(text: str) -> Tuple[List[float], int]:
     )
 
     return embeddings[0].tolist(), tokens
+
 
 def build_response(
     embedding: List[float],
@@ -105,8 +105,7 @@ async def post_embeddings(input_data: InputData = Body(...)):
 
     # cache hit
     if cached_result:
-        decoded = cached_result.decode()
-        print(decoded)
+        decoded = json.loads(cached_result.decode())
         return build_response(
             decoded["embedding"],
             settings.hf_model_name,
